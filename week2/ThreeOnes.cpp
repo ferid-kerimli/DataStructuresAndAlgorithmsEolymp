@@ -1,24 +1,29 @@
 #include <iostream>
-#include <vector>
-
 using namespace std;
 
 const int MOD = 12345;
 
+int countValidSequences(int n) {
+    if (n == 1) return 2;
+    if (n == 2) return 3;
+    if (n == 3) return 4;
+
+    int a = 2, b = 3, c = 4; 
+    int result = 0;
+
+    for (int i = 4; i <= n; i++) {
+        result = (a + b + c) % MOD;
+        a = b;
+        b = c;
+        c = result;
+    }
+
+    return result;
+}
+
 int main() {
     int n;
     cin >> n;
-
-    vector<int> dp(n + 1, 0);
-
-    dp[1] = 2;
-    if (n > 1) dp[2] = 3;
-    if (n > 2) dp[3] = 5;
-
-    for (int i = 4; i <= n; i++) {
-        dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3]) % MOD;
-    }
-
-    cout << dp[n] << endl;
+    cout << countValidSequences(n) << endl;
     return 0;
 }
