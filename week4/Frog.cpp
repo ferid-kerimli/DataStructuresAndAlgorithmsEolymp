@@ -1,32 +1,31 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-
 using namespace std;
 
-int minCostFrogJump(int n, vector<int>& heights) {
+int minFrogCost(int n, vector<int>& h) {
     vector<int> dp(n, 0);
+    
+    dp[0] = 0;
+    dp[1] = abs(h[1] - h[0]);
 
-    dp[1] = abs(heights[1] - heights[0]);
-
-    for (int i = 0; i < n; i++)
-    {
-        int oneStep = dp[i - 1] + abs(heights[i] - heights[i - 1]);
-        int twoStep = dp[i - 2] + abs(heights[i] - heights[i - 2]);
-        dp[i] = min(oneStep, twoStep);
+    for (int i = 2; i < n; i++) {
+        dp[i] = min(dp[i - 1] + abs(h[i] - h[i - 1]), 
+                    dp[i - 2] + abs(h[i] - h[i - 2]));
     }
 
-    return dp[n - 1];    
+    return dp[n - 1];
 }
 
 int main() {
     int n;
     cin >> n;
-    vector<int> heights(n);
+    vector<int> h(n);
+
     for (int i = 0; i < n; i++) {
-        cin >> heights[i];
+        cin >> h[i];
     }
 
-    cout << minCostFrogJump(n, heights) << endl;
+    cout << minFrogCost(n, h) << endl;
     return 0;
 }
